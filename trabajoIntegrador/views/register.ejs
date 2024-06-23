@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+	<!-- Include Head -->
+	<%- include('../views/partials/head.ejs') %>
+	<body>
+		<!-- Header -->
+		<%- include('../views/partials/header.ejs') %>
+		<!-- /Header -->
+
+		<!-- Registrate -->
+		<div class="container products-wrapper">
+			<div class="row">
+				<div class="col-12">
+					<h2 class="products-title">Registrate</h2>
+				</div>
+				<!-- Show form registro -->
+				<form action="http://localhost:3000/cartastic/profile/login" method="get">
+		
+					<label class="form-label" for="email">Email * :</label>
+					<input class="form-input" id="email" type="email" name="email">
+
+
+					<label class="form-label" for="user">User * :</label>
+					<input class="form-input" id="user" type="text" name="user" value="">
+
+					<label class="form-label" for="password">Password * :</label>
+					<input class="form-input" id="password" type="password" name="pass" value="">
+
+					<label class="form-label" for="fecha_nacimiento">Fecha de nacimiento *</label>
+					<input class="form-input" type="date" name="fecha_nacimiento" id="fecha_nacimiento">
+
+					<label class="form-label" for="dni">DNI *</label>
+					<input class="form-input" type="number" name="dni" id="dni">
+
+					<label class="form-label" for="foto_perfil">Foto de perfil</label>
+					<input class="form-input" type="file" name="foto_perfil" id="foto_perfil">
+
+
+					<button class="form-input" type="submit">Registrarse</button>
+				</form>
+			</div>
+		</div>
+		<!-- footer -->
+		<%- include('./partials/footer')%>
+		<!-- /footer -->
+	</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- Include Head -->
+    <%- include('./partials/head')%>
+    <body>
+        <!-- Header -->
+        <%- include('./partials/header')%>
+        <!-- /Header -->
+
+        <!-- Ingresar -->
+        <div class="container product-wrapper">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="products-title">Ingresar</h2>
+                </div>
+                <!--Show form login-->
+                <form action="http://localhost:3000/cartastic/profile/usuario/Tefa123" method="get">
+                    <div>
+                        <label class="form-label" for="email">Usuario * :</label>
+                        <input class="form-input" id="email" type="email" name="email">
+                    </div>
+                    <div>
+                        <label class="form-label" for="password">Contraseña * :</label>
+                        <input class="form-input" id="password" type="password" name="pass" value="">
+                    </div>
+                    <div>
+                        <label class="form-label" for="recordame">Recordarme :</label>
+                        <input class="form-input-recordame" type="checkbox" id="recordarme" name="recordarme">
+                    </div>
+                    <button class="form-input" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+        <!--/Show form login-->
+
+        <!-- footer -->
+        <%- include('./partials/footer')%>
+        <!-- /footer -->
+    </body>
+</html>

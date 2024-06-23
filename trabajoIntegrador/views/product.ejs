@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <!-- Include Head -->
+  <%- include('../views/partials/head.ejs') %>
+  <body>
+    <!-- Header -->
+    <%- include('../views/partials/header.ejs') %>
+    <!-- /Header -->
+    
+    <!-- product detail -->
+    <div class="container products-wrapper">
+      <div class="d-flex align-items-center">
+        <h2 class="products-title"><%= info.nombreProducto %></h2>
+      </div>
+      <div class="product-detail">
+        <div class="row">
+          <article class="col-12 col-lg-8 product-detail-info">
+            <img src= <%= info.fotoProducto %> alt="" class="product-detail-img"/>
+            <p class="product-detail-description"><%= info.descripcion %></p>
+          </article>
+          <div class="col-12 col-lg-4">
+            <section class="comments">
+              <% for(let i=0; i < info.comentariosProd2.length; i++){ %>
+                <article>
+                  <img src= <%- info.comentariosProd2[i].fotoUsuario %> alt="">
+                  <div class="data">
+                    <p class="user">
+                    <strong> <a href="http://localhost:3000/cartastic/profile/usuario/<%- info.comentariosProd2[i].user%>">
+                      <%- info.comentariosProd2[i].user%> : </a> 
+                    </strong>
+                    <%- info.comentariosProd2[i].texto%>
+                  </p>
+                  </div>
+                </article>
+              <% } %>
+  
+            </section>
+            <form class="form" action="http://localhost:3000/cartastic" method="get">
+              <input class="form-input" type="text" value="" placeholder="Agregar comentario">
+              <button type="submit" class="buy-now-button">AGREGAR COMENTARIO</button>
+            </form>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- footer -->
+	  <%- include('./partials/footer') %>	
+	  <!-- /footer -->
+
+  </body>
+</html>

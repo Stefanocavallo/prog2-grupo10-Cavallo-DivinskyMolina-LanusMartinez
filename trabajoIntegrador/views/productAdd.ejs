@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+    <!-- Include Head -->
+    <%- include('../views/partials/head.ejs') %>
+    <body>
+        <!-- Header -->
+        <%- include('../views/partials/headerLogueado.ejs') %>
+        <!-- /Header -->
+
+        <!-- Agregar productos -->
+        <div class="container product-wrapper">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="products-title">Agregar un vehículo</h2>
+                </div>
+                <!--Show form agregar vehiculos-->
+                <form action="http://localhost:3000/cartastic/profile/usuario/Tefa123" method="get">
+                    <div>
+                        <label class="form-label" for="iamagen">Imagen * :</label>
+                        <input class="form-input" id="imagen" type="file" name="imagen">
+                    </div>
+                    <div>
+                        <label class="form-label" for="nombre">Marca y modelo del vehículo * :</label>
+                        <input class="form-input" id="nombre" type="text" name="nombre" value="">
+                    </div>
+                    <label class="form-label" for="descripcion">Ficha técnica del vehículo y detalles :</label>
+                    <div>
+                        <textarea class="form-input" name="descripcion" id="" cols="30" rows="20"></textarea>
+                    </div>
+                    <button class="form-input" type="submit">Agregar</button> </button>
+                </form>
+            </div>
+        </div>
+        <!--/Show form agregar productos-->
+        
+        <!--footer-->
+        <%- include('./partials/footer')%>
+        <!--/footer-->
+    </body>
+</html>
