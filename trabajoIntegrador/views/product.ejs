@@ -4,8 +4,11 @@
   <%- include('../views/partials/head.ejs') %>
   <body>
     <!-- Header -->
-    <%- include('../views/partials/header.ejs') %>
-    <!-- /Header -->
+    <% if (locals.user != undefined) { %>
+      <%- include('./partials/headerLogueado') %>
+       <% } else { %>
+       <%- include('./partials/header') %>	
+       <% } %>    <!-- /Header -->
     
     <!-- product detail -->
     <div class="container products-wrapper">

@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session')
 
-var profileRouter = require('./routes/profiles');
-let prodRouter = require('./routes/product');
-
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+let cartasticRouter = require('./routes/cartastic')
+const db = require("./database/models");
 
 var app = express();
 
@@ -19,9 +21,41 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: "clave secreta",
+  resave: false,
+  saveUninitialized: true,
+}))
 
-app.use("/cartastic", prodRouter);
-app.use('/cartastic/profile', profileRouter);
+app.use(function (req, res, next) {
+  if (req.session.user != undefined) {
+    res.locals.user = req.session.user;
+    return next()
+  }
+  return next()
+})
+
+app.use(function (req, res, next) {
+  if (req.cookies.userId != undefined && req.session.user == undefined) {
+    let idCookie = req.cookies.userId;
+    db.User.findByPk(idCookie)
+      .then(function (user) {
+        req.session.user = user
+        res.locals.user = user;
+        return next()
+      })
+      .catch(function (err) {
+        console.log("error con las cookies", err)
+        next();
+      })
+  } else {
+    return next()
+  }
+})
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/cartastic', cartasticRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

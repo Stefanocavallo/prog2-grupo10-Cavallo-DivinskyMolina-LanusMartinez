@@ -4,8 +4,11 @@
     <%- include('../views/partials/head.ejs') %>
     <body>
         <!-- Header -->
-        <%- include('../views/partials/headerLogueado.ejs') %>
-        <!-- /Header -->
+        <% if (locals.user != undefined) { %>
+            <%- include('./partials/headerLogueado') %>
+           <% } else { %>
+           <%- include('./partials/header') %>	
+           <% } %>        <!-- /Header -->
 
         <!-- Agregar productos -->
         <div class="container product-wrapper">
