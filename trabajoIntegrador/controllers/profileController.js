@@ -94,6 +94,16 @@ const profileController = {
                 })
         }
     },
+
+    logout: function (req, res) {
+        req.session.destroy();
+
+        res.clearCookie("userId");
+
+        return res.redirect("/cartastic");
+    },
+
+    
 }; 
 
 module.exports = profileController

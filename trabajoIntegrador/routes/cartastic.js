@@ -72,7 +72,7 @@ router.get('/profileEdit', profileController.edit);
 
 router.post('/createprofile', registerValidation, profileController.createProfile);
 router.post('/loginprofile', loginValidation, profileController.loginProfile);
-
+router.post('/logout', profileController.logout); 
 
 //Rutas productos get
 

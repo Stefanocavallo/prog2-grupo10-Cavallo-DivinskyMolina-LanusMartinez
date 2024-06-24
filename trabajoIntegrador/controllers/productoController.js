@@ -25,16 +25,28 @@ const productosController = {
         return res.render('productAdd',{})
     },
 
-    search: function(req, res){
-        { 
-            let buscado= req.query.search
-            let rta=[]
-            for (let i = 0; i < dbProductos.productos.length; i++) {
-                if (dbProductos.productos[i].nombreProducto.toLowerCase().includes(buscado.toLowerCase()) ) {
-                    rta.push(dbProductos.productos[i])}}
-            return res.render('searchResults',{info:rta})
-                }
-        }
+    search: function (req, res) {
+        let buscado = req.query.search;
+        db.Product.findAll({
+            where: {
+                [Op.or]: [
+                    { nombre_producto: { [Op.like]: "%" + buscado + "%" } },
+                    { descripcion_producto: { [Op.like]: "%" + buscado + "%" } }
+                ]
+            },
+            include: [{ association: "coment_product" },
+            { association: "user_product" }
+            ],
+            order: [["created_at", "DESC"]]
+        })
+            .then((data) => {
+                return res.render("search-results", { productos: data });
+            })
+
+            .catch(function (e) {
+                console.log(e);
+            });
+    },
 }
 
 

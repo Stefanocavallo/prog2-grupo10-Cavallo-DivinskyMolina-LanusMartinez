@@ -5,43 +5,43 @@
 <body>
   <!-- Header -->
   <% if (locals.user != undefined) { %>
-	<%- include('./partials/headerLogueado') %>
+    <%- include('./partials/headerLogueado') %>
    <% } else { %>
-   <%- include('./partials/header') %>	
+   <%- include('./partials/header') %>
    <% } %>  <!-- /Header -->
 
-	<!-- Resultados -->
-	<div class="container products-wrapper">
-		<div class="row">
-			<div class="col-12">
-				<h2 class="products-title">Resultados de búsqueda</h2>
-			</div>
-			<!-- Show resultados de busqueda -->
-			<%  if(info.length===0){%>
-				<h2 class="produc-no-disp">No encontramos dicho vehiculo entre las publicaciones de los usuarios :/</h2>
-				<%} 
-				else {
-				 for(let i=0; i < info.length; i++){ %>
-						<div class="col-12 col-sm-6 col-lg-3">
-							<section class="product-box">
-								<a href="http://localhost:3000/cartastic/product/<%- info[i].nombreProducto%>">
-									<figure class="product-box_image">
-										<img src= '<%- info[i].fotoProducto %>' alt="<%- info[i].nombreProducto%>">
-									</figure>
-									<article class="product-box_data">
-										<h2><%-info[i].nombreProducto %></h2>
-									
-										<p><%-info[i].descripcion%></p>
-										<p>Comentarios: <%- info[i].comentariosProd2.length %></p>
-									</article>
-								</a>
-							</section>
-						</div>
-				<%  }}%>
-		</div>
-	</div>
+    <!-- Resultados -->
+    <div class="container products-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="products-title">Resultados de búsqueda</h2>
+            </div>
+            <!-- Show resultados de busqueda -->
+            <%  if(info.length===0){%>
+                <h2 class="produc-no-disp">No encontramos dicho vehiculo entre las publicaciones de los usuarios :/</h2>
+                <%} 
+                else {
+                 for(let i=0; i < info.length; i++){ %>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <section class="product-box">
+                                <a href="http://localhost:3000/cartastic/product/<%- info[i].nombreProducto%>">
+                                    <figure class="product-box_image">
+                                        <img src= '<%- info[i].fotoProducto %>' alt="<%- info[i].nombreProducto%>">
+                                    </figure>
+                                    <article class="product-box_data">
+                                        <h2><%-info[i].nombreProducto %></h2>
 
-	<%- include('./partials/footer')%>
+                                        <p><%-info[i].descripcion%></p>
+                                        <p>Comentarios: <%- info[i].comentariosProd2.length %></p>
+                                    </article>
+                                </a>
+                            </section>
+                        </div>
+                <%  }}%>
+        </div>
+    </div>
+
+    <%- include('./partials/footer')%>
 </body>
 
 </html>
