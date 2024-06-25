@@ -383,6 +383,16 @@ hr {
   margin-bottom: 15px;
 }
 
+.buy-after-button {
+  background-color: red;
+  font-size: 1.6em;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 15px;
+}
+
 .action-button {
   border: none;
   border-radius: 8px;
@@ -534,6 +544,7 @@ textarea.form-input {
     margin: auto;
   }
 }
+
 .saludar{
-  color:red;
+  color: red;
 }

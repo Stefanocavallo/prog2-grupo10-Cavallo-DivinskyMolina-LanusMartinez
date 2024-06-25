@@ -67,7 +67,6 @@ const comentValidation = [
     .isLength({min:5})
     .withMessage("El comentario debe tener como mínimo 5 caracteres"),
 ];
-
 const addValidation = [
     body("imagen")
     .notEmpty()
@@ -118,7 +117,6 @@ const editProfValidation = [
 
 router.get('/login', profileController.login);
 router.get('/register', profileController.register);
-router.get('/usuario/:usuario', profileController.profile);
 router.get('/profileEdit', profileController.edit);
 router.get('/profile/:idUsuario', profileController.profile);
 
@@ -126,17 +124,25 @@ router.get('/profile/:idUsuario', profileController.profile);
 
 router.post('/createprofile', registerValidation, profileController.createProfile);
 router.post('/loginprofile', loginValidation, profileController.loginProfile);
-router.post('/logout', profileController.logout); 
+router.post('/logout', profileController.logout);
+router.post('/editProfile', editProfValidation, profileController.edit_profile)
 
 //Rutas productos get
 
 router.get('/', productosController.index)
-router.get('/product/:idProduct', productosController.product);
+router.get('/product/:idProducto', productosController.product);
 router.get('/productAdd', productosController.add);
 router.get('/search', productosController.search);
 router.get('/product/:idProducto', productosController.product);
 routert.get('/deleteProduct/:id', productosController.deleteProduct);
+router.get('/productEdit/:id', productosController.productEdit)
 
 //Rutas productos post
+
 router.post('/addProduct', addValidation, productosController.store)
 router.post('/coment/:id', comentValidation, productosController.coment);
+router.post('/editar/:id', addValidation, productosController.editProduct)
+
+
+
+module.exports = router
