@@ -133,7 +133,7 @@ const profileController = {
             },
         })
             .then(function (result) {
-                return res.redirect(`/cartastic/profile`);
+                return res.redirect(`/cartastic/profile/${id}`);
             })
             .catch(function (err) {
                 console.log(err);
