@@ -1,23 +1,30 @@
-const dbProductos = require('../db/dbProductos')
-const express = require("express")
+let express = require("express");
+let products = require("../db/products");
+let users = require("../db/usuarios");
 
-const productosController = {
+const db = require("../database/models");
+const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
+const { Op, Association } = require('sequelize');
+const Product = require("../database/models/Product");
+
+
+let productsController = {
     index: function (req, res) {
         db.Product.findAll({
-            include: [ { association: "coment_product"}, 
-              {association: "user_product"}
+            include: [{ association: "coment_product" },
+            { association: "user_product" }
             ],
             order: [["created_at", "DESC"]]
-          })
-            .then(function(data){
-              console.log(data)
-              return res.render("home", { info: data })
+        })
+            .then(function (data) {
+                //console.log(data)
+                return res.render("home", { info: data })
             })
-            .catch(function(error){
-              console.log(error)
+            .catch(function (error) {
+                console.log(error)
             });
     },
-
     product: function (req, res) {
         let id = req.params.idProducto;
         db.Product.findByPk(id, {
@@ -27,14 +34,14 @@ const productosController = {
         })
             .then(data => {
                 console.log(data)
-                db.Comentario.findAll({
+                db.Coment.findAll({
                     where: { producto_id: data.id },
+                    order: [["created_at", "DESC"]],
                     include: [
                         { association: "coment_user" }
                     ]
                 })
                     .then(comentarios => {
-                        console.log(comentarios)
                         return res.render("product", { product: data, coment: comentarios })
                     })
             })
@@ -42,34 +49,6 @@ const productosController = {
                 console.log(error);
             })
     },
-
-    profile: function (req, res) {
-        let id = req.params.idUsuario;
-        db.User.findByPk(id, {
-            include: [
-                {
-                    association: "user_product"
-                },
-                { association: "coment_user" }
-            ]
-        })
-            .then(function (data) {
-                db.Product.findAll({
-                    where: { usuario_id: data.id },
-                    order: [["created_at", "DESC"]],
-                    include: [
-                        { association: "coment_product" }
-                    ]
-                })
-                    .then(producto => {
-                        return res.render("profile", { info: data, producto: producto })
-                    })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
-
     add: function (req, res) {
         if (req.session.user == undefined) {
             return res.redirect("/cartastic/register");
@@ -100,9 +79,10 @@ const productosController = {
             })
             .catch(error => {
                 console.log(error)
+            
             })
-    },
 
+    },
     search: function (req, res) {
         let buscado = req.query.search;
         db.Product.findAll({
@@ -129,7 +109,7 @@ const productosController = {
         let id = req.params.id
         console.log(id)
         if (req.session.user) {
-            dbPosta.Product.destroy({
+            db.Product.destroy({
                 where: { id: id }
             })
                 .then(function (data) {
@@ -173,57 +153,57 @@ const productosController = {
             where: { id: req.params.id }
         })
             .then((productoCreado) => {
-                return res.redirect(/cartastic/product/${req.params.id});
+                return res.redirect(`/cartastic/product/${req.params.id}`);
             })
             .catch((error) => {
                 console.log(error);
             });
     },
     coment: function (req, res){
-        const comentValidation = validationResult(req);
-        if(req.session.user !=undefined){
-            if(comentValidation.isEmpty()){
-                let id = req.params.id;
-                db.Coment.create({
-                    comentario: req.body.text,
-                    producto_id: id,
-                    usuario_id: req.session.user.id
-                })
-                .then(function(data){
-                    return res.redirect(/cartastic/product/${id})
-                })
-                .catch(function(error){
-                    console.log(error);
-                })
-            } else {
-                let id = req.params.id
-                db.Product.findByPk(id, {
-                    include: [{association: "coment_product"},
-                        {association: "user_product"}
-                    ]
-                })
-                .then(data => {
-                    db.Coment.findAll({
-                        where: {producto_id: data.id},
-                        include: [
-                            {association: "coment_user"}
+            const comentValidation = validationResult(req);
+            if(req.session.user !=undefined){
+                if(comentValidation.isEmpty()){
+                    let id = req.params.id;
+                    db.Coment.create({
+                        comentario: req.body.text,
+                        producto_id: id,
+                        usuario_id: req.session.user.id
+                    })
+                    .then(function(data){
+                        return res.redirect(`/cartastic/product/${id}`)
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                    })
+                } else {
+                    let id = req.params.id
+                    db.Product.findByPk(id, {
+                        include: [{association: "coment_product"},
+                            {association: "user_product"}
                         ]
                     })
-                    .then(comentarios => {
-                        console.log(comentarios)
-                        return res.render("product",{
-                            errors: comentValidation.mapped(),
-                            product: data,
-                            coment: comentarios
+                    .then(data => {
+                        db.Coment.findAll({
+                            where: {producto_id: data.id},
+                            include: [
+                                {association: "coment_user"}
+                            ]
                         })
-                    })
-            })
-            .catch(error =>{
-                console.log(error);
-            }) 
+                        .then(comentarios => {
+                            console.log(comentarios)
+                            return res.render("product",{
+                                errors: comentValidation.mapped(),
+                                product: data,
+                                coment: comentarios
+                            })
+                        })
+                })
+                .catch(error =>{
+                    console.log(error);
+                }) 
+            }
         }
-    }}
+    },
 }
 
-
-module.exports = productosController
+module.exports = productosController;
