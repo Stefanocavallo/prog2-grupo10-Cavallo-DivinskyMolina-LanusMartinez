@@ -1,91 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <!-- Include Head -->
-<%- include('../views/partials/head.ejs') %>
-<body>
-  <!-- Header -->
-  <% if (locals.user != undefined) { %>
-	<%- include('./partials/headerLogueado') %>
-   <% } else { %>
-   <%- include('./partials/header') %>	
-   <% } %>  <!-- /Header -->
-  
-	<!-- Datos del usuario -->
-	<section class="info-usuario container products-wrapper">
-		<div class="row">
-			<div class="img-container offset-3 col-2">
-				<img src= <%- info.foto %> alt="foto de perfil" class="foto-perfil">
-			</div>
-			<div class="data-container col-6">
-				<div class="d-flex align-items-center ">
-					<h1 class="main-title"><%- info.usuario %> 
-						<a href="http://localhost:3000/cartastic/profile/profileEdit">
-							<i class="fas fa-cog"></i>
-						</a>
-					</h1>
-					<a class="btn mt-3 ml-4" href="">SEGUIR</a>
-					<div>
-						<ul class="">
-							<li>
-						<% let num = 0
-							for (let i = 0; i < productos.length; i++) {
-								if(productos[i].vendedor.toLowerCase()=== info.usuario.toLowerCase()){
-									num = num + 1
-								}
-							}%>
-	
-								<%- num %> productos</li>
-							<li><%- info.seguidores %> seguidores</li>
-							<li>
-							<% let num1 = 0
-								for (let i = 0; i < productos.length; i++) {
-									for(let z=0; z < productos[i].comentariosProd2.length; z++)
-										if(productos[i].comentariosProd2[z].user.toLowerCase()=== info.usuario.toLowerCase()){
-											num1 = num + 1
-									}
-								}%>
-								<%- num1  %> comentarios</li>
-						</ul>
-						<div>
-							<p>
-								<%- info.email %>
-							</p>
-						</div>
-					</div>
-			</div>
-		</div>
-	</section>
-	<!-- /Datos del usuario -->
+<%- include('./partials/head') %>
 
-	<!-- Mis productos -->
-	<div class="container products-wrapper">
-		<div class="row">
-			<div class="col-12">
-				<h2 class="products-title">Mis productos</h2>
-			</div>
-			<!-- Show mis productos -->
-			<% for (let i = 0; i < productos.length; i++) {
-				if (productos[i].vendedor.toLowerCase() === info.usuario.toLowerCase()) {%>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<section class="product-box">
-						<a href="http://localhost:3000/cartastic/product/<%- productos[i].nombreProducto %>">
-							<figure class="product-box_image">
-								<img src="<%-productos[i].fotoProducto%>" alt='<%-productos[i].nombreProducto%>'>
-							</figure>
-							<article class="product-box_data">
-								<h2><%- productos[i].nombreProducto %></h2>
-								<p><%- productos[i].descripcion %></p>
-								<p>Comentarios: <%- productos[i].comentariosProd2.length %></p>
-							</article>
-						</a>
-					</section>
-				</div>
-				<%} }%>
-		</div>
-	</div>
+	<body>
+		<!-- Header -->
+		<% if (locals.user !=undefined) { %>
+			<%- include('./partials/headerLogueado') %>
+				<% } else { %>
+					<%- include('./partials/header') %>
+						<% } %>
+							<!-- /Header -->
+
+							<!-- Datos del usuario -->
+							<section class="info-usuario container products-wrapper">
+								<div class="row">
+									<div class="img-container offset-3 col-2">
+										<img src="/images/users/default-user.webp" alt="foto de perfil"
+											class="foto-perfil">
+									</div>
+									<div class="data-container col-6">
+										<div class="d-flex align-items-center ">
+											<h1 class="main-title-profile">
+												<%= info.user %>
+													<% if (locals.user && locals.user.id===info.id) { %>
+														<a class="profile-a"
+															href="http://localhost:3000/cartastic/profileEdit">
+															<i class="fas fa-cog"></i>
+														</a>
+														<% } %>
+											</h1>
+											<% if (locals.user && locals.user.id !=info.id) { %>
+												<a class="btn mt-3 ml-4" href="">SEGUIR</a>
+												<% } %>
+										</div>
+										<div>
+											<p>
+												<%= info.email %>
+											</p>
+										</div>
+										<div>
+											<ul class="">
+												<li>
+													<%= info.user_product.length %> Vehículo/s
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</section>
+							<!-- /Datos del usuario -->
+
+							<!-- Mis productos -->
+							<div class="container products-wrapper">
+								<div class="row">
+									<% if (producto.length !=0) { %>
+										<div class="col-12">
+											<h2 class="products-title">Vehículos</h2>
+										</div>
+										<!-- Show mis productos -->
+										<% for (let i=0; i < producto.length; i++) { if
+											(info.id===producto[i].usuario_id) {%>
+											<div class="col-12 col-sm-6 col-lg-3">
+												<section class="product-box">
+													<a
+														href="http://localhost:3000/cartastic/product/<%- producto[i].id%>">
+														<figure class="product-box_image">
+															<img src="/images/products/<%= producto[i].foto_producto%>"
+																alt=''>
+														</figure>
+														<article class="product-box_data">
+															<h2>
+																<%= producto[i].nombre_producto %>
+															</h2>
+															<p>
+																<%= producto[i].descripcion_producto %>
+															</p>
+															<p>
+																<%= producto[i].coment_product.length%> Comentario/s
+															</p>
+														</article>
+													</a>
+												</section>
+											</div>
+											<%} }%>
+												<% } else { %>
+													<div class="col-12">
+														<h3 class="products-title">No hay vehículos publicados</h3>
+													</div>
+													<% } %>
+								</div>
+							</div>
+
+							<!-- /Mis productos -->
 
 
-	<%- include('./partials/footer')%>
+							<!-- footer -->
+							<%- include('./partials/footer') %>
+								<!-- /footer -->
+	</body>
 
-</body>	
 </html>

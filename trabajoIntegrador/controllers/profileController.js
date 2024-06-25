@@ -102,6 +102,32 @@ const profileController = {
 
         return res.redirect("/cartastic");
     },
+    profile: function (req, res) {
+        let id = req.params.idUsuario;
+        db.User.findByPk(id, {
+            include: [
+                {
+                    association: "user_product"
+                },
+                { association: "coment_user" }
+            ]
+        })
+            .then(function (data) {
+                db.Product.findAll({
+                    where: { usuario_id: data.id },
+                    order: [["created_at", "DESC"]],
+                    include: [
+                        { association: "coment_product" }
+                    ]
+                })
+                    .then(producto => {
+                        return res.render("profile", { info: data, producto: producto })
+                    })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
 
     
 }; 

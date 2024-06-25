@@ -67,6 +67,7 @@ router.get('/login', profileController.login);
 router.get('/register', profileController.register);
 router.get('/usuario/:usuario', profileController.profile);
 router.get('/profileEdit', profileController.edit);
+router.get('/profile/:idUsuario', profileController.profile);
 
 //Rutas profile post
 
