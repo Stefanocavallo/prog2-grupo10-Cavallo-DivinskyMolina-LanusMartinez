@@ -18,20 +18,56 @@ const productosController = {
             });
     },
 
-    product: function(req, res){
-        let id = req.params.idProduct;
-        let respuesta;
-        for (let i = 0; i < dbProductos.productos.length; i++) {
-            if (id.toLowerCase() === dbProductos.productos[i].nombreProducto.toLowerCase()) {
-                respuesta = dbProductos.productos[i]
-            }
-        }
-        if (!respuesta) {
-            return res.send("El producto seleccionado no está disponible")
-        }
-        else {
-            return res.render("product", {info: respuesta})
-        }
+    product: function (req, res) {
+        let id = req.params.idProducto;
+        db.Product.findByPk(id, {
+            include: [{ association: "coment_product" },
+            { association: "user_product" }
+            ]
+        })
+            .then(data => {
+                console.log(data)
+                db.Comentario.findAll({
+                    where: { producto_id: data.id },
+                    include: [
+                        { association: "coment_user" }
+                    ]
+                })
+                    .then(comentarios => {
+                        console.log(comentarios)
+                        return res.render("product", { product: data, coment: comentarios })
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    },
+
+    profile: function (req, res) {
+        let id = req.params.idUsuario;
+        db.User.findByPk(id, {
+            include: [
+                {
+                    association: "user_product"
+                },
+                { association: "coment_user" }
+            ]
+        })
+            .then(function (data) {
+                db.Product.findAll({
+                    where: { usuario_id: data.id },
+                    order: [["created_at", "DESC"]],
+                    include: [
+                        { association: "coment_product" }
+                    ]
+                })
+                    .then(producto => {
+                        return res.render("profile", { info: data, producto: producto })
+                    })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     },
 
     add: function (req, res) {
@@ -89,6 +125,21 @@ const productosController = {
                 console.log(e);
             });
     },
+    deleteProduct: function (req, res) {
+        let id = req.params.id
+        console.log(id)
+        if (req.session.user) {
+            dbPosta.Product.destroy({
+                where: { id: id }
+            })
+                .then(function (data) {
+                    res.redirect("/cartastic")
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+    }
 }
 
 

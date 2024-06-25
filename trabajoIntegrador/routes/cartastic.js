@@ -95,6 +95,8 @@ router.get('/', productosController.index)
 router.get('/product/:idProduct', productosController.product);
 router.get('/productAdd', productosController.add);
 router.get('/search', productosController.search);
+router.get('/product/:idProducto', productosController.product);
+routert.get('/deleteProduct/:id', productosController.deleteProduct);
 
 //Rutas productos post
 router.post('/addProduct', addValidation, productosController.store)
