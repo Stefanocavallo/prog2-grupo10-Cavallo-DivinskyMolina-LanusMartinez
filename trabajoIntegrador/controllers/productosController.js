@@ -1,6 +1,6 @@
 let express = require("express");
-let products = require("../db/products");
-let users = require("../db/usuarios");
+let products = require("../db/dbProductos");
+let users = require("../db/dbUsuarios");
 
 const db = require("../database/models");
 const bcrypt = require("bcryptjs");
@@ -9,7 +9,7 @@ const { Op, Association } = require('sequelize');
 const Product = require("../database/models/Product");
 
 
-let productsController = {
+let productosController = {
     index: function (req, res) {
         db.Product.findAll({
             include: [{ association: "coment_product" },
