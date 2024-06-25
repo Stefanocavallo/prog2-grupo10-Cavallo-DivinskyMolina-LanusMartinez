@@ -139,7 +139,46 @@ const productosController = {
                     console.log(error)
                 })
         }
-    }
+    },
+    productEdit: function (req, res) {
+        let id = req.params.id
+
+        db.Product.findByPk(id)
+            .then(function (data) {
+                return res.render("product-edit", { data: data })
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    },
+    editProduct: function (req, res) {
+        const addValidation = validationResult(req);
+        if (addValidation.errors.length > 0) {
+            return res.render("product-edit", {
+                errors: addValidation.mapped(),
+                oldData: req.body,
+                data: { id: req.params.id }
+            });
+        }
+        let id = req.session.user.id;
+        data = req.body;
+
+        let producto = {
+            foto_producto: data.imagen,
+            nombre_producto: data.nombre,
+            descripcion_producto: data.descripcion,
+            usuario_id: id,
+        };
+        db.Product.update(producto, {
+            where: { id: req.params.id }
+        })
+            .then((productoCreado) => {
+                return res.redirect(/cartastic/product/${req.params.id});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
 }
 
 

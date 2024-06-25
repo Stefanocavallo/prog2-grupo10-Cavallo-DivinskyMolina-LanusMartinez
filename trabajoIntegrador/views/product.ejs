@@ -1,55 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-  <!-- Include Head -->
-  <%- include('../views/partials/head.ejs') %>
-  <body>
-    <!-- Header -->
-    <% if (locals.user != undefined) { %>
-      <%- include('./partials/headerLogueado') %>
-       <% } else { %>
-       <%- include('./partials/header') %>	
-       <% } %>    <!-- /Header -->
-    
-    <!-- product detail -->
-    <div class="container products-wrapper">
-      <div class="d-flex align-items-center">
-        <h2 class="products-title"><%= info.nombreProducto %></h2>
-      </div>
-      <div class="product-detail">
-        <div class="row">
-          <article class="col-12 col-lg-8 product-detail-info">
-            <img src= <%= info.fotoProducto %> alt="" class="product-detail-img"/>
-            <p class="product-detail-description"><%= info.descripcion %></p>
-          </article>
-          <div class="col-12 col-lg-4">
-            <section class="comments">
-              <% for(let i=0; i < info.comentariosProd2.length; i++){ %>
-                <article>
-                  <img src= <%- info.comentariosProd2[i].fotoUsuario %> alt="">
-                  <div class="data">
-                    <p class="user">
-                    <strong> <a href="http://localhost:3000/cartastic/profile/usuario/<%- info.comentariosProd2[i].user%>">
-                      <%- info.comentariosProd2[i].user%> : </a> 
-                    </strong>
-                    <%- info.comentariosProd2[i].texto%>
-                  </p>
-                  </div>
-                </article>
-              <% } %>
-  
-            </section>
-            <form class="form" action="http://localhost:3000/cartastic" method="get">
-              <input class="form-input" type="text" value="" placeholder="Agregar comentario">
-              <button type="submit" class="buy-now-button">AGREGAR COMENTARIO</button>
-            </form>
-            <hr />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- footer -->
-	  <%- include('./partials/footer') %>	
-	  <!-- /footer -->
-
-  </body>
-</html>
+<!-- Include Head -->
+<%- include('./partials/head') %>	
+<body>
+	<!-- Header -->
+	<% if (locals.user != undefined) { %>
+		<%- include('./partials/headerLogueado') %>
+	   <% } else { %>
+	   <%- include('./partials/header') %>	
+	   <% } %>
+	<!-- /Header -->
+	
+	<!-- product detail -->
+	<div class="container products-wrapper">
+		<div class="d-flex align-items-center">
+			<h2 class="products-title">
+				<%= product.nombre_producto %>
+			</h2> 
+			<% if (locals.user && locals.user.id === product.usuario_id) { %>
+			<p class="product-detail-description">
+				<button class="buy-after-button">
+				<a href="http://localhost:3000/cartastic/productEdit">Editar</a>
+				</button>
+				<button class="buy-after-button">
+				<a href="http://localhost:3000/cartastic/deleteProduct/<%= product.id %>"> Borrar</a>
+				</button>
+			</p>
+			<% } %>
+		</div>
+		<div class="product-detail">
+			<div class="row">
+				<article class="col-12 col-lg-8 product-detail-info">
+					<img src="/images/users/<%= product.foto_producto%>" alt="" class="product-detail-img">
+					<p class="product-detail-description">
+						<%= product.descripcion_producto %>
+					</p>
+				</article>
+				<div class="col-12 col-lg-4">
+					<section class="comments">
+						<% for(let i=0; i < coment.length; i++){ %>
+							<article>
+								<img src="/images/users/default-user.webp" alt="">
+								<div class="data">
+									<p class="user">
+									<strong>
+										<a href="http://localhost:3000/cartastic/profile/<%- coment[i].coment_user.id%>">
+											<%- coment[i].coment_user.email%>
+										</a> 
+									</strong>
+									<br>
+									<%= coment[i].comentario%>
+								</p>
+								</div>
+							</article>
+						<% } %>
