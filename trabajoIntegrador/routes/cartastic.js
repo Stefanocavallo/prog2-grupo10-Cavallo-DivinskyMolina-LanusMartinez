@@ -79,7 +79,39 @@ const addValidation = [
     body("descripcion")
     .notEmpty()
     .withMessage("Para agregar un vehículo necesitas agrear una breve descripción o mismo la ficha técnica.")
-]
+];
+const editProfValidation = [
+    body("email")
+        .notEmpty().withMessage('Por favor, ingrese un nuevo mail.')
+        .isEmail().withMessage('Debes ingresar un email valido.')
+        .custom(function (value, { req }) {
+            if (value != req.session.user.email) {
+                return db.User.findOne({
+                    where: [{ email: value }]
+                })
+                    .then(function (data) {
+                        if (data) {
+                            throw new Error('Este email ya se encuentra registrado.')
+                        }
+                    })
+            }
+            return true
+        }),
+    body('user')
+        .notEmpty().withMessage('Por favor, ingrese un nuevo usuario.'),
+    body('pass')
+        .custom(function (value) {
+            if (value == "") {
+                return true
+            }
+            else if (value.length < 4) {
+                throw new Error('La contraseña debe tener como mínimo 4 caracteres')
+            }
+            else {
+                return true
+            }
+        })
+];
 
 
 //Rutas profile get

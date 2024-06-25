@@ -28,8 +28,63 @@ const profileController = {
         return res.render('register',{})
     },
     
-    edit: function(req, res){
-        return res.render('profileEdit',{})
+    edit: function (req, res) {
+        let id = req.session.user.id;
+        db.User.findByPk(id)
+            .then((data) => {
+                res.render("profile-edit", { usuario: data });
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    },
+    edit_profile: function (req, res) {
+        const editProfValidation = validationResult(req);
+        if (editProfValidation.errors.length > 0) {
+            return res.render("profile-edit", {
+                errors: editProfValidation.mapped(),
+                oldData: req.body,
+                usuario: req.session.user
+            });
+        }
+        const id = req.session.user.id;
+        const perfil = req.body;
+        if (perfil.fecha_nacimiento == "") {
+            perfil.fecha_nacimiento = null;
+        }
+        if (perfil.dni == "") {
+            perfil.dni = null;
+        }
+        if (perfil.foto_perfil == "") {
+            perfil.foto_perfil = null;
+        }
+
+        perfilEditado = {
+            email: perfil.email,
+            clave: perfil.pass,
+            fecha: perfil.fecha_nacimiento,
+            dni: perfil.dni,
+            foto_de_perfil: perfil.foto_perfil,
+            user: perfil.user,
+        };
+
+        if (perfilEditado.clave == "") {
+            perfilEditado.clave = req.session.user.clave
+        }
+        else {
+            perfilEditado.clave = bcrypt.hashSync(perfilEditado.clave, 12)
+        }
+        db.User.update(perfilEditado, {
+            where: {
+                id: id,
+            },
+        })
+            .then(function (result) {
+                return res.redirect(`/bears/profile`);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     },
     createProfile: function (req, res) {
         const registerValidation = validationResult(req);
