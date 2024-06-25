@@ -1,69 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-  <!-- Include Head -->
-  <%- include('./partials/head') %>
-  <body>
-    <!-- Header -->
-    <% if (locals.user != undefined) { %> <%-
-    include('./partials/headerLogueado') %> <% } else { %> <%-
-    include('./partials/header') %> <% } %>
-    <!-- /Header -->
+<!-- Include Head -->
 
-    <!-- Novedades -->
-    <div class="container products-wrapper">
-      <div class="row">
-        <div class="col-12">
-          <h2 class="products-title">Publicar vehículo</h2>
-        </div>
-        <!-- Show the "ultimos" products -->
-        <form action="http://localhost:3000/cartastic/addProduct" method="POST">
-          <div>
-            <label class="form-label" for="imagen">Imagen * :</label>
-            <input
-              class="form-input"
-              id="imagen"
-              type="text"
-              name="imagen"
-              ,
-              value="<%= locals.oldData && oldData.imagen ? oldData.imagen : null %>"
-            />
-            <% if (locals.errors && errors.imagen) { %>
-            <div class="error"><%= errors.imagen.msg %></div>
-            <% } %>
-          </div>
-          <div>
-            <label class="form-label" for="nombre">Marca y modelo::</label>
-            <input
-              class="form-input"
-              id="nombre"
-              type="text"
-              name="nombre"
-              value="<%= locals.oldData && oldData.nombre ? oldData.nombre : null %>"
-            />
-            <% if (locals.errors && errors.nombre) { %>
-            <div class="error"><%= errors.nombre.msg %></div>
-            <% } %>
-          </div>
-          <label class="form-label" for="descripcion"
-            >Descripción o ficha técnica * :</label
-          >
-          <div>
-            <textarea
-              class="form-input"
-              name="descripcion"
-              id=""
-              cols="30"
-              rows="10"
-              value="<%= locals.oldData && oldData.descripcion ? oldData.descripcion : null %>"
-            ></textarea>
-            <% if (locals.errors && errors.descripcion) { %>
-            <div class="error"><%= errors.descripcion.msg %></div>
-            <% } %>
-          </div>
+<%- include('./partials/head') %>
 
-          <button class="form-input" type="submit">Publicar</button>
-        </form>
-      </div>
-    </div>
-  </body>
+	<body>
+		<!-- Header -->
+		<% if (locals.user !=undefined) { %>
+			<%- include('./partials/headerLogueado') %>
+				<% } else { %>
+					<%- include('./partials/header') %>
+						<% } %>
+							<!-- /Header -->
+
+							<!-- Novedades -->
+							<div class="container products-wrapper">
+								<div class="row">
+									<div class="col-12">
+										<h2 class="products-title">Publicar vehículo</h2>
+									</div>
+									<!-- Show the "ultimos" products -->
+									<form action="http://localhost:3000/cartastic/addProduct" method="POST">
+										<div>
+											<label class="form-label" for="imagen">Imagen * :</label>
+											<input class="form-input" id="imagen" type="text" name="imagen" ,
+												value="<%= locals.oldData && oldData.imagen ? oldData.imagen : null %>">
+											<% if (locals.errors && errors.imagen) { %>
+												<div class="error">
+													<%= errors.imagen.msg %>
+												</div>
+												<% } %>
+										</div>
+										<div>
+											<label class="form-label" for="nombre">Marca y modelo * :</label>
+											<input class="form-input" id="nombre" type="text" name="nombre"
+												value="<%= locals.oldData && oldData.nombre ? oldData.nombre : null %>">
+											<% if (locals.errors && errors.nombre) { %>
+												<div class="error">
+													<%= errors.nombre.msg %>
+												</div>
+												<% } %>
+										</div>
+										<label class="form-label" for="descripcion">Descripción y/o ficha técnica *
+											:</label>
+										<div>
+											<textarea class="form-input" name="descripcion" id="" cols="30" rows="10"
+												value="<%= locals.oldData && oldData.descripcion ? oldData.descripcion : null %>"></textarea>
+											<% if (locals.errors && errors.descripcion) { %>
+												<div class="error">
+													<%= errors.descripcion.msg %>
+												</div>
+												<% } %>
+										</div>
+
+										<button class="form-input" type="submit">Publicar</button>
+									</form>
+								</div>
+							</div>
+							<!-- footer -->
+							<%- include('./partials/footer') %>
+								<!-- /footer -->
+	</body>
+
+</html>
+
 </html>

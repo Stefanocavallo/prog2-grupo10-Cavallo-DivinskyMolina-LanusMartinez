@@ -1,56 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <!-- Include Head -->
-<%- include('./partials/head') %>	
-<body>
-	<!-- Header -->
-	<% if (locals.user != undefined) { %>
-		<%- include('./partials/headerLogueado') %>
-	   <% } else { %>
-	   <%- include('./partials/header') %>	
-	   <% } %>
-	<!-- /Header -->
-	
-	<!-- product detail -->
-	<div class="container products-wrapper">
-		<div class="d-flex align-items-center">
-			<h2 class="products-title">
-				<%= product.nombre_producto %>
-			</h2> 
-			<% if (locals.user && locals.user.id === product.usuario_id) { %>
-			<p class="product-detail-description">
-				<button class="buy-after-button">
-				<a href="http://localhost:3000/cartastic/productEdit">Editar</a>
-				</button>
-				<button class="buy-after-button">
-				<a href="http://localhost:3000/cartastic/deleteProduct/<%= product.id %>"> Borrar</a>
-				</button>
-			</p>
-			<% } %>
-		</div>
-		<div class="product-detail">
-			<div class="row">
-				<article class="col-12 col-lg-8 product-detail-info">
-					<img src="/images/users/<%= product.foto_producto%>" alt="" class="product-detail-img">
-					<p class="product-detail-description">
-						<%= product.descripcion_producto %>
-					</p>
-				</article>
-				<div class="col-12 col-lg-4">
-					<section class="comments">
-						<% for(let i=0; i < coment.length; i++){ %>
-							<article>
-								<img src="/images/users/default-user.webp" alt="">
-								<div class="data">
-									<p class="user">
-									<strong>
-										<a href="http://localhost:3000/cartastic/profile/<%- coment[i].coment_user.id%>">
-											<%- coment[i].coment_user.email%>
-										</a> 
-									</strong>
-									<br>
-									<%= coment[i].comentario%>
-								</p>
-								</div>
-							</article>
+<%- include('./partials/head') %>
+
+	<body>
+		<!-- Header -->
+		<% if (locals.user !=undefined) { %>
+			<%- include('./partials/headerLogueado') %>
+				<% } else { %>
+					<%- include('./partials/header') %>
 						<% } %>
+							<!-- /Header -->
+
+							<!-- product detail -->
+							<div class="container products-wrapper">
+								<div class="d-flex align-items-center">
+									<h2 class="products-title">
+										<%= product.nombre_producto %>
+									</h2>
+									<% if (locals.user && locals.user.id===product.usuario_id) { %>
+										<p class="product-detail-description">
+											<button class="buy-after-button">
+												<a href="http://localhost:3000/cartastic/productEdit/<%= product.id %>">Editar
+													publicación</a>
+											</button>
+											<button class="buy-after-button">
+												<a
+													href="http://localhost:3000/cartastic/deleteProduct/<%= product.id %>">
+													Borrar publicación</a>
+											</button>
+										</p>
+										<% } %>
+								</div>
+								<div class="product-detail">
+									<div class="row">
+										<article class="col-12 col-lg-8 product-detail-info">
+											<img src="/images/products/<%=product.foto_producto %>" alt=""
+												class="product-detail-img">
+											<p class="product-detail-description">
+												<%= product.descripcion_producto %>
+											</p>
+										</article>
+										<div class="col-12 col-lg-4">
+											<section class="comments">
+												<% for(let i=0; i < coment.length; i++){ %>
+													<article>
+														<img src="/images/users/default-user.webp" alt="">
+														<div class="data">
+															<p class="user">
+																<strong>
+																	<a
+																		href="http://localhost:3000/cartastic/profile/<%- coment[i].coment_user.id%>">
+																		<%- coment[i].coment_user.email%>
+																	</a>
+																</strong>
+																<br>
+																<%= coment[i].comentario%>
+															</p>
+														</div>
+													</article>
+													<% } %>
+
+											</section>
+											<% if (locals.user !=undefined) { %>
+												<form class="form"
+													action="http://localhost:3000/cartastic/coment/<%= product.id %>"
+													method="POST">
+													<input class="form-input" type="text" name="text" value=""
+														placeholder="Comentario...">
+													<% if (locals.errors && errors.text) { %>
+														<div class="error">
+															<%= errors.text.msg %>
+														</div>
+														<% } %>
+															<button type="submit" class="buy-now-button">AGREGAR
+																COMENTARIO</button>
+												</form>
+												<% } else { %>
+													<h2>
+														Debes iniciar sesión para comentar!
+													</h2>
+													<% } %>
+														<hr>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /product detail -->
+
+							<!-- footer -->
+							<%- include('./partials/footer') %>
+								<!-- /footer -->
+
+	</body>
+
+</html>

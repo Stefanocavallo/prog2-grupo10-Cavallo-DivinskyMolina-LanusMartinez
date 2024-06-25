@@ -1,48 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
 <!-- Include Head -->
-<%- include('../views/partials/head.ejs') %>
+
+<%- include('./partials/head') %>
+
 	<body>
 		<!-- Header -->
-		<%- include('../views/partials/headerLogueado.ejs') %>
-		<!-- /Header -->
-	
-		<!-- Editar perfil -->
-		<div class="container products-wrapper">
-			<div class="row">
-				<div class="col-12">
-					<h2 class="products-title">Editar mi perfil</h2>
+		<%- include('./partials/headerLogueado') %>
+			<!-- /Header -->
+
+			<!-- Novedades -->
+			<div class="container products-wrapper">
+				<div class="row">
+					<div class="col-12">
+						<h2 class="products-title">Editar mi perfil</h2>
+					</div>
+					<!-- Show the "ultimos" products -->
+
+					<form action="http://localhost:3000/cartastic/editProfile" method="POST">
+						<div>
+							<label class="form-label" for="email">Email * :</label>
+							<input class="form-input" id="email" type="email" name="email" value="<%= usuario.email %>">
+							<% if (locals.errors && errors.email) { %>
+								<div class="error">
+									<%= errors.email.msg %>
+								</div>
+								<% } %>
+						</div>
+						<div>
+							<label class="form-label" for="user">Usuario * :</label>
+							<input class="form-input" id="user" type="text" name="user" value="<%= usuario.user %>">
+							<% if (locals.errors && errors.user) { %>
+								<div class="error">
+									<%= errors.user.msg %>
+								</div>
+								<% } %>
+						</div>
+						<div>
+							<label class="form-label" for="password">Contraseña * :</label>
+							<input class="form-input" id="password" type="password" name="pass" value="">
+							<% if (locals.errors && errors.pass) { %>
+								<div class="error">
+									<%= errors.pass.msg %>
+								</div>
+								<% } %>
+						</div>
+						<div>
+							<label class="form-label" for="fecha_nacimiento">Fecha de nacimiento:</label>
+							<input class="form-input" type="date" name="fecha_nacimiento" id="fecha_nacimiento"
+								value="<%= usuario.fecha %>">
+						</div>
+						<div>
+							<label class="form-label" for="dni">Documento:</label>
+							<input class="form-input" type="number" name="dni" id="dni" value="<%= usuario.dni %>">
+						</div>
+						<div>
+							<label class="form-label" for="foto_perfil">Foto de perfil:</label>
+							<input class="form-input" type="text" name="foto_perfil" id="foto_perfil"
+								value="<%= usuario.foto_de_perfil %>">
+						</div>
+
+						<button class="form-input" type="submit">Confirmar cambios</button>
+					</form>
 				</div>
-				<!-- Show form editar perfil -->
-				<form action="http://localhost:3000/cartastic/profile/usuario/Tefa123" method="get">
-		
-					<label class="form-label" for="email">Email * :</label>
-					<input class="form-input" id="email" type="email" name="email">
-
-
-					<label class="form-label" for="user">User * :</label>
-					<input class="form-input" id="user" type="text" name="user" value="">
-
-					<label class="form-label" for="password">Password * :</label>
-					<input class="form-input" id="password" type="password" name="pass" value="">
-
-					<label class="form-label" for="fecha_nacimiento">Fecha de nacimiento *</label>
-					<input class="form-input" type="date" name="fecha_nacimiento" id="fecha_nacimiento">
-
-					<label class="form-label" for="dni">DNI</label>
-					<input class="form-input" type="number" name="dni" id="dni">
-
-					<label class="form-label" for="foto_perfil">Foto de perfil</label>
-					<input class="form-input" type="file" name="foto_perfil" id="foto_perfil">
-
-
-					<button class="form-input" type="submit">Confirmar cambios</button>
-				</form>
 			</div>
-		</div>
-		<!-- footer -->
-		<%- include('./partials/footer')%>
-		<!-- /footer -->
+			<!-- footer -->
+			<%- include('./partials/footer') %>
+				<!-- /footer -->
 	</body>
 
 </html>
