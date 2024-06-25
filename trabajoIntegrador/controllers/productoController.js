@@ -2,9 +2,22 @@ const dbProductos = require('../db/dbProductos')
 const express = require("express")
 
 const productosController = {
-    index: function(req,res){
-        return res.render("index", {info: dbProductos.productos})
+    index: function (req, res) {
+        db.Product.findAll({
+            include: [ { association: "coment_product"}, 
+              {association: "user_product"}
+            ],
+            order: [["created_at", "DESC"]]
+          })
+            .then(function(data){
+              console.log(data)
+              return res.render("home", { info: data })
+            })
+            .catch(function(error){
+              console.log(error)
+            });
     },
+
     product: function(req, res){
         let id = req.params.idProduct;
         let respuesta;
