@@ -60,6 +60,13 @@ const loginValidation = [
                 });
         }),
 ];
+const comentValidation = [
+    body("text")
+    .notEmpty()
+    .withMessage("Agrega un comentario!")
+    .isLength({min:5})
+    .withMessage("El comentario debe tener como mínimo 5 caracteres"),
+];
 
 const addValidation = [
     body("imagen")
@@ -100,3 +107,4 @@ routert.get('/deleteProduct/:id', productosController.deleteProduct);
 
 //Rutas productos post
 router.post('/addProduct', addValidation, productosController.store)
+router.post('/coment/:id', comentValidation, productosController.coment);

@@ -179,6 +179,50 @@ const productosController = {
                 console.log(error);
             });
     },
+    coment: function (req, res){
+        const comentValidation = validationResult(req);
+        if(req.session.user !=undefined){
+            if(comentValidation.isEmpty()){
+                let id = req.params.id;
+                db.Coment.create({
+                    comentario: req.body.text,
+                    producto_id: id,
+                    usuario_id: req.session.user.id
+                })
+                .then(function(data){
+                    return res.redirect(/cartastic/product/${id})
+                })
+                .catch(function(error){
+                    console.log(error);
+                })
+            } else {
+                let id = req.params.id
+                db.Product.findByPk(id, {
+                    include: [{association: "coment_product"},
+                        {association: "user_product"}
+                    ]
+                })
+                .then(data => {
+                    db.Coment.findAll({
+                        where: {producto_id: data.id},
+                        include: [
+                            {association: "coment_user"}
+                        ]
+                    })
+                    .then(comentarios => {
+                        console.log(comentarios)
+                        return res.render("product",{
+                            errors: comentValidation.mapped(),
+                            product: data,
+                            coment: comentarios
+                        })
+                    })
+            })
+            .catch(error =>{
+                console.log(error);
+            }) 
+        }
+    }}
 }
 
 
