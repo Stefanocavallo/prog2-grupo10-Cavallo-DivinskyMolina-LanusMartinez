@@ -85,7 +85,7 @@ const profileController = {
         let id = req.session.user.id;
         db.User.findByPk(id)
             .then((data) => {
-                res.render("profile-edit", { usuario: data });
+                res.render("profileEdit", { usuario: data });
             })
             .catch((e) => {
                 console.log(e);
@@ -94,7 +94,7 @@ const profileController = {
     edit_profile: function (req, res) {
         const editProfValidation = validationResult(req);
         if (editProfValidation.errors.length > 0) {
-            return res.render("profile-edit", {
+            return res.render("profileEdit", {
                 errors: editProfValidation.mapped(),
                 oldData: req.body,
                 usuario: req.session.user
@@ -133,7 +133,7 @@ const profileController = {
             },
         })
             .then(function (result) {
-                return res.redirect(`/bears/profile`);
+                return res.redirect(`/cartastic/profile`);
             })
             .catch(function (err) {
                 console.log(err);

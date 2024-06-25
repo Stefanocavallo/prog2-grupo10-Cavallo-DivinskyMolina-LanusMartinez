@@ -5,6 +5,8 @@ let profileController = require('../controllers/profileController');
 
 const db = require('../database/models');
 const { body } = require('express-validator');
+const bcrypt = require("bcryptjs");
+
 
 
 const registerValidation = [
@@ -134,7 +136,7 @@ router.get('/product/:idProducto', productosController.product);
 router.get('/productAdd', productosController.add);
 router.get('/search', productosController.search);
 router.get('/product/:idProducto', productosController.product);
-routert.get('/deleteProduct/:id', productosController.deleteProduct);
+router.get('/deleteProduct/:id', productosController.deleteProduct);
 router.get('/productEdit/:id', productosController.productEdit)
 
 //Rutas productos post

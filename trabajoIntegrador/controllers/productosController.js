@@ -53,13 +53,13 @@ let productosController = {
         if (req.session.user == undefined) {
             return res.redirect("/cartastic/register");
         } else {
-            return res.render("product-add");
+            return res.render("productAdd");
         }
     },
     store: function (req, res) {
         const addValidation = validationResult(req);
         if (addValidation.errors.length > 0) {
-            return res.render("product-add", {
+            return res.render("productAdd", {
                 errors: addValidation.mapped(),
                 oldData: req.body,
             });
@@ -98,7 +98,7 @@ let productosController = {
             order: [["created_at", "DESC"]]
         })
             .then((data) => {
-                return res.render("search-results", { productos: data });
+                return res.render("searchResults", { productos: data });
             })
 
             .catch(function (e) {
@@ -125,7 +125,7 @@ let productosController = {
 
         db.Product.findByPk(id)
             .then(function (data) {
-                return res.render("product-edit", { data: data })
+                return res.render("productEdit", { data: data })
             })
             .catch(function (error) {
                 console.log(error)
@@ -134,7 +134,7 @@ let productosController = {
     editProduct: function (req, res) {
         const addValidation = validationResult(req);
         if (addValidation.errors.length > 0) {
-            return res.render("product-edit", {
+            return res.render("productEdit", {
                 errors: addValidation.mapped(),
                 oldData: req.body,
                 data: { id: req.params.id }
