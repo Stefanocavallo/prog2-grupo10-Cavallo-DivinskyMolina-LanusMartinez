@@ -61,6 +61,20 @@ const loginValidation = [
         }),
 ];
 
+const addValidation = [
+    body("imagen")
+    .notEmpty()
+    .withMessage("Para publicar un vehículo necesitas cargar una foto del mismo."),
+
+    body("nombre")
+    .notEmpty().withMessage("Para agregar un vehículo necesitas aclarar marca y modelo del mismo."),
+
+    body("descripcion")
+    .notEmpty()
+    .withMessage("Para agregar un vehículo necesitas agrear una breve descripción o mismo la ficha técnica.")
+]
+
+
 //Rutas profile get
 
 router.get('/login', profileController.login);
@@ -83,4 +97,4 @@ router.get('/productAdd', productosController.add);
 router.get('/search', productosController.search);
 
 //Rutas productos post
-
+router.post('/addProduct', addValidation, productosController.store)

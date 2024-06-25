@@ -34,8 +34,37 @@ const productosController = {
         }
     },
 
-    add: function(req, res){
-        return res.render('productAdd',{})
+    add: function (req, res) {
+        if (req.session.user == undefined) {
+            return res.redirect("/cartastic/register");
+        } else {
+            return res.render("product-add");
+        }
+    },
+    store: function (req, res) {
+        const addValidation = validationResult(req);
+        if (addValidation.errors.length > 0) {
+            return res.render("product-add", {
+                errors: addValidation.mapped(),
+                oldData: req.body,
+            });
+        }
+        let id = req.session.user.id
+        data = req.body;
+
+        let producto = {
+            foto_producto: data.imagen,
+            nombre_producto: data.nombre,
+            descripcion_producto: data.descripcion,
+            usuario_id: id
+        };
+        db.Product.create(producto)
+            .then((productoCreado) => {
+                return res.redirect('/cartastic')
+            })
+            .catch(error => {
+                console.log(error)
+            })
     },
 
     search: function (req, res) {
